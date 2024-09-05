@@ -18,7 +18,6 @@ export let getPosts = createAsyncThunk('postsSlice/getPosts',async ({limit,page}
 export let getPaginationInfo = createAsyncThunk('postsSlice/getPaginationInfo',async ({limit,page}:{limit?:number, page?:number}) => {
     try {
         let {data} = await axios.get(`https://linked-posts.routemisr.com/posts?limit=${limit}&page=${page}`,{ headers: getAuthHeaders() })
-        console.log(data);
         return data.paginationInfo
     } catch (error) {
         console.log(error);
@@ -27,7 +26,6 @@ export let getPaginationInfo = createAsyncThunk('postsSlice/getPaginationInfo',a
 export let getUserPosts = createAsyncThunk('postsSlice/getUserPosts',async ({ limit ,user }: { limit?: number; user: string }) => {
     try {
         let {data} = await axios.get(`https://linked-posts.routemisr.com/users/${user}/posts?limit=${limit}`,{ headers: getAuthHeaders() })
-        console.log(data.posts);
         return data.posts
     } catch (error) {
         console.log(error);
@@ -38,7 +36,6 @@ export let getUserPosts = createAsyncThunk('postsSlice/getUserPosts',async ({ li
 export let addPost = createAsyncThunk('postsSlice/addPost',async (formData : FormData) => {
     try {
         let {data} = await axios.post(`https://linked-posts.routemisr.com/posts`,formData,{ headers: getAuthHeaders() })
-        console.log(data);
         toast.success("post added successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -59,7 +56,6 @@ export let addPost = createAsyncThunk('postsSlice/addPost',async (formData : For
 export let updatePost = createAsyncThunk('postsSlice/updatePost',async ({postId,formData}:{postId:string, formData : FormData}) => {
     try {
         let {data} = await axios.put(`https://linked-posts.routemisr.com/posts/${postId}`,formData,{ headers: getAuthHeaders() })
-        console.log(data);
         toast.success("post updated successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -80,8 +76,6 @@ export let updatePost = createAsyncThunk('postsSlice/updatePost',async ({postId,
 export let getPostsDetails = createAsyncThunk('postsSlice/getPostsDetails',async (id:string) => {
     try {
         let {data} = await axios.get(`https://linked-posts.routemisr.com/posts/${id}`,{ headers: getAuthHeaders() })
-        console.log(data);
-        console.log(data.post);
         return data.post
     } catch (error) {
         console.log(error);
@@ -90,7 +84,6 @@ export let getPostsDetails = createAsyncThunk('postsSlice/getPostsDetails',async
 export let deletePost = createAsyncThunk('postsSlice/deletePost',async (id:string) => {
     try {
         let {data} = await axios.delete(`https://linked-posts.routemisr.com/posts/${id}`,{ headers: getAuthHeaders() })
-        console.log(data);
         toast.success("post deleted successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -172,7 +165,6 @@ let postsSlice = createSlice({
         })
         builder.addCase(getPaginationInfo.fulfilled,(state,action)=>{
             state.isLoading=false
-            console.log(action);
             state.paginationInfo = action.payload
         })
         builder.addCase(getUserPosts.fulfilled,(state,action)=>{

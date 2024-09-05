@@ -23,7 +23,7 @@ export default function ForgetPassword() {
     } else if (error) {
       console.log(error);
     }
-  }, [isSuccess, error,token, isLoading]);
+  }, [isSuccess, error,token, isLoading, router]);
 
   async function login(values:loginData) {
     await dispatch(userLogin(values))

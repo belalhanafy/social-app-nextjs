@@ -1,12 +1,13 @@
 import { resetPassData } from "@/interfaces/forgetPassInterface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-let headers = {
-    token : localStorage.getItem('token')
-}
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return token ? { token } : {};
+};
 export let resetPass = createAsyncThunk('resetPassSlice/resetPass',async (values:resetPassData)=>{
     try {
-            let {data} = await axios.patch(`https://linked-posts.routemisr.com/users/change-password`,values,{headers});
+            let {data} = await axios.patch(`https://linked-posts.routemisr.com/users/change-password`,values,{headers:getAuthHeaders()});
             console.log(data);
             return data
         } catch (error:any) {

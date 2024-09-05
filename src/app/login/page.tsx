@@ -18,11 +18,6 @@ export default function Login() {
   // let {token,isLoading,isSuccess} = useSelector((state:LoginState)=>state.loginData)
   let { isLoading, isSuccess, error, token } = useSelector((state: AppState) => state.loginData)
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      router.push('/')
-    }
-  }, [])
-  useEffect(() => {
     if (isSuccess) {
       if (localStorage.getItem('token')) {
         router.push('/');
@@ -30,11 +25,12 @@ export default function Login() {
     } else if (error) {
       setApiError(error);
     }
-  }, [isSuccess, error, token, isLoading]);
+  }, [isSuccess, error, token, isLoading,router]);
 
   async function login(values: loginData) {
     await dispatch(userLogin(values))
   }
+  
   function showPassword(){
     const passwordInput = document.getElementById('password') as HTMLInputElement
     if(passwordInput.type === 'password'){

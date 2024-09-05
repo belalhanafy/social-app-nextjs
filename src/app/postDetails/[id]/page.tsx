@@ -12,7 +12,7 @@ export default function PostDetails({params:{id}} : {params:{id: string}}) {
   
   useEffect(() => {
     dispatch(getPostsDetails(id))
-  }, []);
+  }, [dispatch]);
 
   return (<>
     {isLoading ? <Loading/>: postDetails && <Post postDetailsComments={true} recentpost={postDetails} />}

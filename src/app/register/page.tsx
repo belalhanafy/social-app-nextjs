@@ -40,7 +40,7 @@ export default function Register() {
     } else if (anyError) {
       setApiError(anyError);
     }
-  }, [Success, anyError, Loading, check]);
+  }, [Success, anyError, Loading, check, router]);
 
   async function register(values: registerData) {
     await dispatch(userRegister(values));
@@ -48,6 +48,14 @@ export default function Register() {
   }
   function showPassword(){
     const passwordInput = document.getElementById('password') as HTMLInputElement
+    if(passwordInput.type === 'password'){
+      passwordInput.type = 'text'
+    }else{
+      passwordInput.type = 'password'
+    }
+  }
+  function showRePassword(){
+    const passwordInput = document.getElementById('rePassword') as HTMLInputElement
     if(passwordInput.type === 'password'){
       passwordInput.type = 'text'
     }else{
@@ -187,7 +195,7 @@ export default function Register() {
           />
           {formik.values.rePassword  && (
               <IconButton
-                onClick={() => showPassword()}
+                onClick={() => showRePassword()}
                 sx={{
                   position: "absolute",
                   right: "0",
@@ -205,7 +213,7 @@ export default function Register() {
           ) : (
             ""
           )}
-          <FormLabel id="gender">dateOfBirth</FormLabel>
+          <FormLabel id="dateOfBirth">dateOfBirth</FormLabel>
           <TextField
             id="dateOfBirth"
             label=""

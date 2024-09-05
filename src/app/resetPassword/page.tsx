@@ -10,7 +10,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-export default function resetPassword() {
+export default function ResetPassword() {
     let dispatch = useDispatch<AppDispatch>()
     let router = useRouter()
     let {isLoading, isSuccess, error} = useSelector((state:AppState)=>state.resetPassData)
@@ -23,7 +23,7 @@ export default function resetPassword() {
         console.log(error);
         
       }
-    }, [isSuccess, error, isLoading]);
+    }, [isSuccess, error, isLoading, router]);
   
     async function resetPassword(values:resetPassData) {
       await dispatch(resetPass(values))
@@ -39,7 +39,8 @@ export default function resetPassword() {
         .min(8, 'Password is too short - should be at least 8 characters.')
         .matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z\d]).{8,}$/, 
           'Password must start with a capital letter, contain at least one digit, and be 8-20 characters long.')
-        .required('Password is required'),
+        .required('Password is required')
+        .notOneOf([Yup.ref('password')], 'New password cannot be the same as old password'),
     });
     let formik = useFormik({
       initialValues: {
@@ -55,8 +56,8 @@ export default function resetPassword() {
           <form onSubmit={formik.handleSubmit}>
               <TextField
                 id="oldPassword"
-                label="oldPassword"
-                placeholder="Enter oldPassword"
+                label="Old Password"
+                placeholder="Enter Old Password"
                 variant="standard"
                 type='password'
                 fullWidth
@@ -71,8 +72,8 @@ export default function resetPassword() {
                 ):''}
               <TextField
                 id="newPassword"
-                label="newPassword"
-                placeholder="Enter newPassword"
+                label="New Password"
+                placeholder="Enter New Password"
                 variant="standard"
                 type='password'
                 fullWidth

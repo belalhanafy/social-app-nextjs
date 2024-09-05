@@ -86,14 +86,13 @@ export default function Navbar() {
     if (token) {
       dispatch(getUserData())
     }
-  }, [userData,token])
+  }, [userData,token, dispatch])
   
 
   function logout() {
     token=null;
     localStorage.removeItem("token");
     router.push('/login')
-    console.log(token);
   }
   function login() {
     router.push('/login')
@@ -155,7 +154,7 @@ export default function Navbar() {
     >
     {localStorage.getItem('token') ? (
     [
-      <MenuItem key="profile" onClick={()=>{handleMenuClose; goToProfile()}}>Profile</MenuItem>,
+      <MenuItem key="profile" onClick={()=>{handleMenuClose(); goToProfile()}}>Profile</MenuItem>,
       <MenuItem key="logout" onClick={()=>{handleMenuClose();logout();}}>Logout</MenuItem>,
       <MenuItem key="photo" onClick={()=>{handleMenuClose();}}>
         <Button
@@ -167,7 +166,7 @@ export default function Navbar() {
           Upload photo
           <VisuallyHiddenInput
             type="file"
-            onChange={(event) => uploadUserPhoto(event)}
+            onChange={uploadUserPhoto}
             id='image'
             name='image'
           />
@@ -208,13 +207,13 @@ export default function Navbar() {
           color="inherit"
           sx={{padding:"0",paddingRight:"5px"}}
         >
-          {/* {userData && <Image
+          {userData && <Image
                     width={40}
                     height={40}
                     style={{ borderRadius: "50%", objectFit: "cover", border: "2px solid #1976d2"}}
                     src={userData?.photo}
                     alt={userData?.name}
-                />} */}
+                />}
         </IconButton>
         <p>Profile</p>
       </MenuItem>

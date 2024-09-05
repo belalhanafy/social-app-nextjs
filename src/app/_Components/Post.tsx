@@ -2,10 +2,8 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -64,11 +62,12 @@ type DecodedToken = {
 };
 export default function RecentPost({ recentpost, postDetailsComments = false }: { recentpost: Post; postDetailsComments?: boolean; }) {
     let { comments } = useSelector((state: AppState) => state.comment)
+    let dispatch = useDispatch<AppDispatch>();
     React.useEffect(() => {
         if (postDetailsComments) {
             dispatch(getPostComments(recentpost._id))
         }
-    }, [comments])
+    }, [comments,dispatch])
     let { isLoading } = useSelector((state: AppState) => state.post)
     const [fileName, setfileName] = React.useState(null)
     const [updatePostt, setUpdatePostt] = React.useState(false)
@@ -197,7 +196,6 @@ export default function RecentPost({ recentpost, postDetailsComments = false }: 
 
     const router = useRouter();
     const [expanded, setExpanded] = React.useState(false);
-    let dispatch = useDispatch<AppDispatch>();
 
     const addNewComment = (e: Event | any, postId: string) => {
         e.preventDefault();

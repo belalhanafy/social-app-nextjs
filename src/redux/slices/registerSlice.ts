@@ -5,10 +5,7 @@ import axios from "axios";
 
 export let userRegister = createAsyncThunk('registerSlice/userRegister',async (values:registerData)=>{
     try {
-            let {data} = await axios
-            .post(`https://linked-posts.routemisr.com/users/signup`,values);
-            console.log(data);
-            // return data
+            let {data} = await axios.post(`https://linked-posts.routemisr.com/users/signup`,values);
         } catch (error:any) {
             throw error.response.data.error;
         }
@@ -24,7 +21,6 @@ let registerSlice = createSlice({
             state.Loading=true
         })
         builder.addCase(userRegister.rejected,(state:any,action)=>{
-            console.log(state);
             state.anyError=action.error.message,
             state.Loading=false,
             state.Success=false

@@ -43,7 +43,7 @@ export default function Profile() {
     if (user && isSuccess) {
       dispatch(getUserPosts({ user, limit : 50 }));
     }
-  }, [isSuccess]);
+  }, [isSuccess,dispatch]);
   function handleFormSubmit(e:Event|any) {
     e.preventDefault();
     

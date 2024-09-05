@@ -25,7 +25,7 @@ useEffect(() => {
       dispatch(getPaginationInfo({limit:50}));
     }
   }
-}, []);
+}, [router,dispatch,token]);
 
   const [dataFetched, setDataFetched] = useState(false);
   const [currpage, setCurrPage] = useState(19);
@@ -40,7 +40,7 @@ useEffect(() => {
       dispatch(getPosts({ limit: paginationInfo.limit, page: currpage}));
       setDataFetched(true);
     }
-  }, [paginationInfo,currpage]);
+  }, [paginationInfo,currpage,dispatch]);
   
   return <>
   {/* .slice() is called first to create a shallow copy of the posts array. This prevents the original posts array from being mutated by .reverse(). */}
