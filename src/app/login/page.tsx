@@ -156,7 +156,7 @@ export default function Login() {
             </Link>
           </Typography>
           <Typography sx={{ textAlign: "center" }}>
-            Don't have an account? {"  "}
+            Dont have an account? {"  "}
             <Link
               href="/register"
               style={{
