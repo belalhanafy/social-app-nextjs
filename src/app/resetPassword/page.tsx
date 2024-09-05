@@ -10,7 +10,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-export default function resetPassword() {
+export default function ResetPassword() {
     let dispatch = useDispatch<AppDispatch>()
     let router = useRouter()
     let {isLoading, isSuccess, error} = useSelector((state:AppState)=>state.resetPassData)

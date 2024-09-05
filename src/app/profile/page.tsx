@@ -28,7 +28,7 @@ type DecodedToken = {
   user: string;
   iat: number;
 };
-export default function profile() {
+export default function Profile() {
   let {token} = useSelector((state:AppState)=>state.loginData)
   let {posts,isLoading,loading,isSuccess} = useSelector((state:AppState)=>state.post)
 
