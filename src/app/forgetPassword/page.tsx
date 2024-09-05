@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 
-export default function forgetPassword() {
+export default function ForgetPassword() {
   let dispatch = useDispatch<AppDispatch>()
   let router = useRouter()
   let {isLoading, isSuccess, error, token} = useSelector((state:AppState)=>state.loginData)
