@@ -1,95 +1,57 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+
+'use client'
+
+import { getPaginationInfo, getPosts } from "@/redux/slices/postsSlice";
+import { AppDispatch, AppState } from "@/redux/store";
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "./loading";
+import Post from "./_Components/Post";
+import { Box, Pagination, Stack } from "@mui/material";
 
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  
+  let router = useRouter();
+  let dispatch = useDispatch<AppDispatch>()
+  let {posts,isLoading,paginationInfo} = useSelector((state:AppState)=>state.post)
+  let {token} = useSelector((state:AppState)=>state.loginData)
+  // useEffect to check authentication and fetch pagination info
+useEffect(() => {
+  if (!localStorage.getItem('token')) {
+    router.push('/login');
+  }else{
+    if (localStorage.getItem('token')) {
+      dispatch(getPaginationInfo({limit:50}));
+    }
+  }
+}, []);
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+  const [dataFetched, setDataFetched] = useState(false);
+  const [currpage, setCurrPage] = useState(19);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const reversePage = paginationInfo.numberOfPages - (value - 1);
+    setCurrPage(reversePage);
+    setDataFetched(false);
+  };
+  useEffect(() => {
+    if (!dataFetched && paginationInfo&& Object.keys(paginationInfo).length !== 0) {
+      console.log(paginationInfo);
+      dispatch(getPosts({ limit: paginationInfo.limit, page: currpage}));
+      setDataFetched(true);
+    }
+  }, [paginationInfo,currpage]);
+  
+  return <>
+  {/* .slice() is called first to create a shallow copy of the posts array. This prevents the original posts array from being mutated by .reverse(). */}
+  {isLoading && paginationInfo&&Object.keys(paginationInfo).length !== 0 ?<Loading/> : posts?.slice().reverse().map((post)=> <Post recentpost={post} key={post._id} />)}
+  {!isLoading && paginationInfo &&Object.keys(paginationInfo).length !== 0 &&
+      <Box sx={{display:"flex",justifyContent:"center", my:"15px"}}>
+        <Stack spacing={2}>
+          <Pagination count={paginationInfo?.numberOfPages} page={paginationInfo?.numberOfPages - (currpage - 1)} onChange={handleChange} color="primary" />
+        </Stack>
+      </Box>
+  }
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+  </> 
 }
