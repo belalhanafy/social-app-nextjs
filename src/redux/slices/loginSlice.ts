@@ -51,7 +51,13 @@ let initialState : {userData:null|UserData, token:string|null,isLoading:boolean,
 let userSlice = createSlice({
     name: "userSlice",
     initialState,
-    reducers:{},
+    reducers: {
+        logout: (state) => {
+            state.token = null;
+            state.userData = null;
+            localStorage.removeItem('token');
+        }
+    },
     extraReducers:(builder)=>{
         builder.addCase(userLogin.pending,(state)=>{
             state.isLoading=true
@@ -77,3 +83,4 @@ let userSlice = createSlice({
 })
 
 export let loginReducer = userSlice.reducer;
+export let { logout } = userSlice.actions;

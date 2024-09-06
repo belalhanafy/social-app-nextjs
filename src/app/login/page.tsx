@@ -19,7 +19,7 @@ export default function Login() {
   let { isLoading, isSuccess, error, token } = useSelector((state: AppState) => state.loginData)
   useEffect(() => {
     if (isSuccess) {
-      if (typeof window !== 'undefined' && localStorage.getItem('token')) {
+      if (token) {
         router.push('/');
       }
     } else if (error) {

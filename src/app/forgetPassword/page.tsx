@@ -15,15 +15,15 @@ export default function ForgetPassword() {
   let dispatch = useDispatch<AppDispatch>()
   let router = useRouter()
   let {isLoading, isSuccess, error, token} = useSelector((state:AppState)=>state.loginData)
-  useEffect(() => {
+ useEffect(() => {
     if (isSuccess) {
-      if (typeof window !== 'undefined' && localStorage.getItem('token')) {
+      if (token) {
         router.push('/resetPassword');
       }
     } else if (error) {
       console.log(error);
     }
-  }, [isSuccess, error,token, isLoading, router]);
+  }, [isSuccess, error, token, isLoading, router]);
 
   async function login(values:loginData) {
     await dispatch(userLogin(values))

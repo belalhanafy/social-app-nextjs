@@ -87,7 +87,7 @@ export default function RecentPost({ recentpost, postDetailsComments = false }: 
         setAnchorEl(event.currentTarget);
     };
 
-    // to change name 
+    // to change name of button
     function handleFile(e: Event | any) {
         try {
             let file = e.target.files[0].name;
@@ -180,7 +180,7 @@ export default function RecentPost({ recentpost, postDetailsComments = false }: 
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            {typeof window !== 'undefined' && localStorage.getItem('token') ? (
+            {token ? (
                 [
                     <MenuItem key="profile" onClick={handleMenuClose}>Profile</MenuItem>,
                     <MenuItem key="logout" onClick={() => { handleMenuClose(); }}>Logout</MenuItem>

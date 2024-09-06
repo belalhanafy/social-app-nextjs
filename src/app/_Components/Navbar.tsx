@@ -7,13 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -22,6 +17,8 @@ import { AppDispatch, AppState } from '@/redux/store';
 import { getUserData, uploadphoto } from '@/redux/slices/loginSlice';
 import Image from 'next/image';
 import { Button } from '@mui/material';
+import { logout } from '@/redux/slices/loginSlice';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -79,7 +76,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   let router = useRouter()
   let dispatch = useDispatch<AppDispatch>();
-  const [loading, setLoading] = React.useState(false)
   let {token,userData} = useSelector((state:AppState)=>state.loginData)
   
   React.useEffect(() => {
@@ -89,19 +85,16 @@ export default function Navbar() {
   }, [userData,token, dispatch])
   
 
-  function logout() {
-    token=null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem("token");
-    }
-    router.push('/login')
+  function logoutt() {
+    dispatch(logout());
+    router.push('/login');
   }
+
   function login() {
     router.push('/login')
   }
+
   async function uploadUserPhoto(event:Event | any) {
-    setLoading(true)
-    console.log(event);
     let photo = event.target.files[0];
     let formData = new FormData()
     formData.append('photo', photo);
@@ -155,10 +148,10 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
     
-    {typeof window !== 'undefined' && localStorage.getItem('token') ? (
+    {token ? (
     [
       <MenuItem key="profile" onClick={()=>{handleMenuClose(); goToProfile()}}>Profile</MenuItem>,
-      <MenuItem key="logout" onClick={()=>{handleMenuClose();logout();}}>Logout</MenuItem>,
+      <MenuItem key="logout" onClick={()=>{handleMenuClose();logoutt();}}>Logout</MenuItem>,
       <MenuItem key="photo" onClick={()=>{handleMenuClose();}}>
         <Button
           component="label"
@@ -239,7 +232,7 @@ export default function Navbar() {
 
           <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {typeof window !== 'undefined' && localStorage.getItem('token') && (<IconButton
+              {token && (<IconButton
                 size="large"
                 edge="end"
                 aria-label="account of current user"
