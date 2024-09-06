@@ -16,6 +16,9 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    CI: 'false',
+  },
 };
 
 export default nextConfig;

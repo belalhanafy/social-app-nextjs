@@ -4,9 +4,11 @@ import { Post } from '@/interfaces/postInterface';
 import { Bounce, toast } from 'react-toastify';
 
 const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { token } : {};
-};
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        return token ? { token } : {};
+    }
+  };
 export let getPosts = createAsyncThunk('postsSlice/getPosts',async ({limit,page}:{limit?:number, page?:number}) => {
     try {
         let {data} = await axios.get(`https://linked-posts.routemisr.com/posts?limit=${limit}&page=${page}`,{ headers: getAuthHeaders() })

@@ -4,8 +4,10 @@ import { Post } from '@/interfaces/postInterface';
 import { Bounce, toast } from 'react-toastify';
 
 const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
-    return token ? { token } : {};
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        return token ? { token } : {};
+    }
   };
 export let addComment = createAsyncThunk(
     'commentSlice/addComment',
