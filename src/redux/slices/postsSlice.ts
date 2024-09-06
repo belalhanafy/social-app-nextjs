@@ -67,6 +67,7 @@ export let updatePost = createAsyncThunk('postsSlice/updatePost',async ({postId,
             theme: "light",
             transition: Bounce,
             });
+            console.log(data);
     } catch (error) {
         console.log(error);
     }
@@ -95,6 +96,7 @@ export let deletePost = createAsyncThunk('postsSlice/deletePost',async (id:strin
             theme: "light",
             transition: Bounce,
             });
+            console.log(data);
     } catch (error) {
         console.log(error);
     }

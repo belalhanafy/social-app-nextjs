@@ -22,7 +22,7 @@ import { AppDispatch, AppState } from "@/redux/store";
 import { addComment, deleteComment, getPostComments, updateComment } from "@/redux/slices/commentSlice";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import { deletePost, updatePost } from "@/redux/slices/postsSlice";
+import { deletePost, getPosts, updatePost } from "@/redux/slices/postsSlice";
 import { jwtDecode } from "jwt-decode";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Bounce, toast } from "react-toastify";
