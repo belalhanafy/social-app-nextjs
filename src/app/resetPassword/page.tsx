@@ -17,8 +17,10 @@ export default function ResetPassword() {
 
     useEffect(() => {
       if (isSuccess) {
-        router.push("/login"),
-        localStorage.removeItem('token')
+        router.push("/login")
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token')
+        }
       } else if (error) {
         console.log(error);
         

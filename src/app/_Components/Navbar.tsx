@@ -91,7 +91,9 @@ export default function Navbar() {
 
   function logout() {
     token=null;
-    localStorage.removeItem("token");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("token");
+    }
     router.push('/login')
   }
   function login() {
@@ -152,7 +154,8 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-    {localStorage.getItem('token') ? (
+    
+    {typeof window !== 'undefined' && localStorage.getItem('token') ? (
     [
       <MenuItem key="profile" onClick={()=>{handleMenuClose(); goToProfile()}}>Profile</MenuItem>,
       <MenuItem key="logout" onClick={()=>{handleMenuClose();logout();}}>Logout</MenuItem>,
@@ -176,8 +179,8 @@ export default function Navbar() {
   ) : ([
     <MenuItem key="login" onClick={()=>{handleMenuClose();login()}}>Login</MenuItem>,
     <MenuItem key="register" onClick={()=>{handleMenuClose();register()}}>Register</MenuItem>
-  ]
-  )}
+    ]
+    )}
     </Menu>
   );
 
@@ -236,7 +239,7 @@ export default function Navbar() {
 
           <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {localStorage.getItem('token') && (<IconButton
+              {typeof window !== 'undefined' && localStorage.getItem('token') && (<IconButton
                 size="large"
                 edge="end"
                 aria-label="account of current user"

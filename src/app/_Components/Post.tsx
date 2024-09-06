@@ -180,7 +180,7 @@ export default function RecentPost({ recentpost, postDetailsComments = false }: 
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            {localStorage.getItem('token') ? (
+            {typeof window !== 'undefined' && localStorage.getItem('token') ? (
                 [
                     <MenuItem key="profile" onClick={handleMenuClose}>Profile</MenuItem>,
                     <MenuItem key="logout" onClick={() => { handleMenuClose(); }}>Logout</MenuItem>
