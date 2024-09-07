@@ -60,6 +60,31 @@ type DecodedToken = {
     user: string;
     iat: number;
 };
+function formatDate(timestamp: string): string {
+    const date = new Date(timestamp);
+  
+    const day = date.getUTCDate();
+    let suffix = "th";
+    if (day === 1 || day === 21 || day === 31) suffix = "st";
+    else if (day === 2 || day === 22) suffix = "nd";
+    else if (day === 3 || day === 23) suffix = "rd";
+  
+    const optionsDate: Intl.DateTimeFormatOptions = {
+        month: "long",
+        day: "numeric", 
+        year: "numeric" 
+    };
+    const formattedDate = date.toLocaleDateString("en-US", optionsDate);
+  
+    const optionsTime: Intl.DateTimeFormatOptions = {
+        hour: "numeric", 
+        minute: "numeric",
+        second: "numeric",
+        hour12: true
+    };
+    const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
+    return `${formattedDate.replace(day.toString(), day + suffix)} at ${formattedTime}`;
+  }
 export default function RecentPost({ recentpost, postDetailsComments = false }: { recentpost: Post; postDetailsComments?: boolean; }) {
     let { comments } = useSelector((state: AppState) => state.comment)
     let dispatch = useDispatch<AppDispatch>();
@@ -236,7 +261,7 @@ export default function RecentPost({ recentpost, postDetailsComments = false }: 
                     )
                 }
                 title={recentpost.user.name}
-                subheader={recentpost.createdAt.slice(0, 10)}
+                subheader={formatDate(recentpost.createdAt)}
             // titleTypographyProps={{
             //     onClick: () => {
             //         router.push("/profile");
